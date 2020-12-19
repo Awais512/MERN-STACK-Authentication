@@ -62,3 +62,38 @@ exports.accountActivation = async (req, res) => {
     res.status(500).json({ msg: 'Something Went Wrong', error: err });
   }
 };
+
+//@desc     Sign into the Account
+//@route    POST /api/v1/auth/signin
+//@access   Public
+exports.signin = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ msg: 'Email does not exist! Please sign up first' });
+    }
+    //authenticate
+    if (!user.authenticate(password)) {
+      return res.status(400).json({ msg: 'Email or Password do not match' });
+    }
+
+    //Generate a token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '7d',
+    });
+
+    const { _id, name, role } = user;
+
+    res.json({
+      token,
+      user: { _id, name, email, role },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ msg: 'Something Went Wrong', error: err });
+  }
+};

@@ -1,7 +1,8 @@
 import React from 'react';
+import Layout from './shared/Layout';
 
 const App = () => {
-  return <div>Mern Auth</div>;
+  return <Layout>Mern Auth</Layout>;
 };
 
 export default App;

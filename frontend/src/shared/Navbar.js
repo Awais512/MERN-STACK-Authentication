@@ -1,12 +1,23 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (
     <ul className='nav nav-tabs bg-dark'>
       <li className='nav-item'>
-        <a href='/' className='text-light nav-link'>
+        <Link to='/' className='text-light nav-link'>
           Home
-        </a>
+        </Link>
+      </li>
+      <li className='nav-item float-right'>
+        <Link to='/signin' className='text-light nav-link'>
+          Signin
+        </Link>
+      </li>
+      <li className='nav-item float-right'>
+        <Link to='/signup' className='text-light nav-link'>
+          Signup
+        </Link>
       </li>
     </ul>
   );

@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 const Signup = () => {
   return (
-    <div>
-      <h1>Signup Page</h1>
-    </div>
+    <>
+      <ToastContainer />
+      <h1>Signup Form</h1>
+    </>
   );
 };
 

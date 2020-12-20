@@ -11,7 +11,9 @@ exports.signup = async (req, res) => {
   try {
     let user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ error: 'Email already exist' });
+      return res.status(400).json({
+        error: 'Email is taken',
+      });
     }
 
     const token = jwt.sign(
@@ -38,7 +40,7 @@ exports.signup = async (req, res) => {
     });
   } catch (err) {
     console.log(err.response.body);
-    res.status(500).json({ err: 'Server Error' });
+    res.json({ message: err.message });
   }
 };
 

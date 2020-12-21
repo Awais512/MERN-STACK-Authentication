@@ -30,7 +30,8 @@ const SigninForm = ({ values, setValues }) => {
         console.log(data);
         history.push('/');
       } catch (error) {
-        console.log(error);
+        console.log('SIGNUP ERROR', error.response.data);
+        toast.error(error.response.data.error);
       }
     }
   };

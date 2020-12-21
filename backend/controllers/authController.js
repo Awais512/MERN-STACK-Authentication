@@ -75,12 +75,12 @@ exports.signin = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) {
       return res
-        .status(404)
-        .json({ msg: 'Email does not exist! Please sign up first' });
+        .status(400)
+        .json({ error: 'Email does not exist! Please sign up first' });
     }
     //authenticate
     if (!user.authenticate(password)) {
-      return res.status(400).json({ msg: 'Email or Password do not match' });
+      return res.status(400).json({ error: 'Email or Password do not match' });
     }
 
     //Generate a token
@@ -96,6 +96,6 @@ exports.signin = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ msg: 'Something Went Wrong', error: err });
+    res.status(500).json({ error: 'Something Went Wrong', error: err });
   }
 };

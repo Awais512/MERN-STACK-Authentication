@@ -12,3 +12,10 @@ export const registerUser = async ({ name, email, password }) => {
     password,
   });
 };
+
+export const userSignin = async ({ email, password }) => {
+  return await axios.post(`${process.env.REACT_APP_API}/auth/signin`, {
+    email,
+    password,
+  });
+};

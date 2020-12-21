@@ -61,7 +61,7 @@ exports.accountActivation = async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-    res.status(500).json({ msg: 'Something Went Wrong', error: err });
+    res.status(500).json({ error: 'Something Went Wrong', error: err });
   }
 };
 

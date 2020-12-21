@@ -19,3 +19,10 @@ export const userSignin = async ({ email, password }) => {
     password,
   });
 };
+
+export const activateAccount = async (token) => {
+  return await axios.post(
+    `${process.env.REACT_APP_API}/auth/account-activation`,
+    { token }
+  );
+};

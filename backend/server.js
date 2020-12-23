@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 dotenv.config({ path: `${__dirname}/.env` });
 //Import route files
 const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
 const { connectDb } = require('./db');
 
 //Connect to database
@@ -19,6 +20,7 @@ app.use(cors());
 
 //Mounting Routes
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/user', userRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>

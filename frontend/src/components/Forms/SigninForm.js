@@ -1,5 +1,5 @@
 import React from 'react';
-import { userSignin, authenticate } from '../../Functions/auth';
+import { userSignin, authenticate, isAuth } from '../../Functions/auth';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 
@@ -29,8 +29,10 @@ const SigninForm = ({ values, setValues }) => {
         });
         console.log(response.data);
         authenticate(response, () => {
-          toast.success(`Hey ${response.data.user.name} Welcome`);
-          history.push('/');
+          // toast.success(`Hey ${response.data.user.name} Welcome`);
+          isAuth() && isAuth().role === 'admin'
+            ? history.push('/admin')
+            : history.push('/private');
         });
       } catch (error) {
         toast.error(error.response.data.error);

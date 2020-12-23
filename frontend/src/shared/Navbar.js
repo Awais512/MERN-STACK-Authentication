@@ -27,9 +27,19 @@ const Navbar = () => {
         </>
       )}
 
-      {isAuth() && (
+      {isAuth() && isAuth().role === 'admin' && (
         <li className='nav-item'>
-          <span className='text-light nav-link'>{isAuth().name}</span>
+          <Link to='/admin' className='text-light nav-link'>
+            {isAuth().name}
+          </Link>
+        </li>
+      )}
+
+      {isAuth() && isAuth().role === 'subscriber' && (
+        <li className='nav-item'>
+          <Link to='/private' className='text-light nav-link'>
+            {isAuth().name}
+          </Link>
         </li>
       )}
 

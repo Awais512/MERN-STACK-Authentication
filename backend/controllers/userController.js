@@ -10,6 +10,8 @@ exports.getUser = async (req, res) => {
     if (!user) {
       return res.status(400).json({ error: 'User not found' });
     }
+    user.hashed_password = undefined;
+    user.salt = undefined;
     res.json(user);
   } catch (err) {
     console.log(err);

@@ -2,11 +2,11 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { isAuth } from '../Functions/auth';
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
+const AdminRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={(props) =>
-      isAuth() ? (
+      isAuth() && isAuth().role === 'admin' ? (
         <Component {...props} />
       ) : (
         <Redirect
@@ -20,4 +20,4 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   ></Route>
 );
 
-export default PrivateRoute;
+export default AdminRoute;

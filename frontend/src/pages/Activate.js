@@ -10,7 +10,7 @@ const Activate = ({ match }) => {
     show: true,
   });
 
-  const { name, token, show } = values;
+  const { name, token } = values;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +20,7 @@ const Activate = ({ match }) => {
       setValues({ ...values, show: false });
       toast.success(data.message);
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.error);
     }
   };
 
@@ -30,7 +30,7 @@ const Activate = ({ match }) => {
     if (token) {
       setValues({ ...values, name, token });
     }
-  }, []);
+  }, [match.params.token, values]);
   return (
     <>
       <div className='col-md-6 offset-md-3'>

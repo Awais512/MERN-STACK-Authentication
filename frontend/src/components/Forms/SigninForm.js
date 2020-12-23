@@ -1,7 +1,7 @@
 import React from 'react';
-import { userSignin, authenticate, isAuth } from '../../Functions/auth';
+import { userSignin, authenticate } from '../../Functions/auth';
 import { toast } from 'react-toastify';
-import { Redirect, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const SigninForm = ({ values, setValues }) => {
   const history = useHistory();

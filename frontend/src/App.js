@@ -4,6 +4,8 @@ import Activate from './pages/Activate';
 import Home from './pages/Home';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
+import Admin from './shared/Admin';
+import AdminRoute from './shared/AdminRoute';
 import Layout from './shared/Layout';
 import Private from './shared/Private';
 import PrivateRoute from './shared/PrivateRoute';
@@ -17,6 +19,7 @@ const App = () => {
         <Route path='/signup' component={Signup} />
         <Route path='/auth/activate/:token' component={Activate} />
         <PrivateRoute path='/private' component={Private} />
+        <AdminRoute path='/admin' component={Admin} />
       </Layout>
     </Switch>
   );

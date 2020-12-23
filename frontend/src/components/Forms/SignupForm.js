@@ -10,39 +10,27 @@ const SignupForm = ({ values, setValues }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name) {
-      return toast.error('Name is Required');
-    } else if (name.length < 4) {
-      return toast.error('Name should be atleast 4 Characters');
-    } else if (!password) {
-      return toast.error('Password is Required');
-    } else if (password.length < 6) {
-      return toast.error('Password should be atleast 6 characters');
-    } else if (!email) {
-      return toast.error('Email is Required');
-    } else {
-      try {
-        const { data } = await registerUser({ name, email, password });
-        console.log(data);
-        setValues({
-          ...values,
-          name: '',
-          email: '',
-          password: '',
-          btnText: 'Submit',
-        });
-        toast.success(data.message);
-      } catch (error) {
-        console.log(error);
-        setValues({
-          ...values,
-          name: '',
-          email: '',
-          password: '',
-          btnText: 'Submit',
-        });
-        toast.error('Email Already Exist');
-      }
+    try {
+      const { data } = await registerUser({ name, email, password });
+      console.log(data);
+      setValues({
+        ...values,
+        name: '',
+        email: '',
+        password: '',
+        btnText: 'Submit',
+      });
+      toast.success(data.message);
+    } catch (error) {
+      console.log(error);
+      setValues({
+        ...values,
+        name: '',
+        email: '',
+        password: '',
+        btnText: 'Submit',
+      });
+      toast.error(error.response.data.error);
     }
   };
   return (
@@ -76,13 +64,13 @@ const SignupForm = ({ values, setValues }) => {
       </div>
       <div className='pt-2'>
         <button
-          disabled={
-            !name ||
-            name.length < 4 ||
-            !email ||
-            !password ||
-            password.length < 6
-          }
+          // disabled={
+          //   !name ||
+          //   name.length < 4 ||
+          //   !email ||
+          //   !password ||
+          //   password.length < 6
+          // }
           className='btn btn-primary'
           onClick={handleSubmit}
         >

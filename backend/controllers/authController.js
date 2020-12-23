@@ -90,7 +90,7 @@ exports.signin = async (req, res) => {
 
     const { _id, name, role } = user;
 
-    res.json({
+    return res.json({
       token,
       user: { _id, name, email, role },
     });

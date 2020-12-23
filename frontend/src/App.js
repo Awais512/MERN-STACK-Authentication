@@ -8,14 +8,14 @@ import Layout from './shared/Layout';
 
 const App = () => {
   return (
-    <Layout>
-      <Switch>
+    <Switch>
+      <Layout>
         <Route path='/' component={Home} exact />
         <Route path='/signin' component={Signin} />
         <Route path='/signup' component={Signup} />
         <Route path='/auth/activate/:token' component={Activate} />
-      </Switch>
-    </Layout>
+      </Layout>
+    </Switch>
   );
 };
 

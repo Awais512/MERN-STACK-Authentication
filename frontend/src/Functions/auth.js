@@ -28,7 +28,7 @@ export const activateAccount = async (token) => {
   );
 };
 
-//Set Cookie
+// set in cookie
 export const setCookie = (key, value) => {
   if (window !== 'undefined') {
     cookie.set(key, value, {
@@ -36,53 +36,45 @@ export const setCookie = (key, value) => {
     });
   }
 };
-
-//Remove Cookie
+// remove from cookie
 export const removeCookie = (key) => {
   if (window !== 'undefined') {
-    cookie.remove(key);
+    cookie.remove(key, {
+      expires: 1,
+    });
   }
 };
-
-//Get Cookie
+// get from cookie such as stored token
+// will be useful when we need to make request to server with token
 export const getCookie = (key) => {
   if (window !== 'undefined') {
     return cookie.get(key);
   }
 };
-
-//Set Cookie in Localstorage
-export const setCookieInLocalStorage = (key, value) => {
+// set in localstorage
+export const setLocalStorage = (key, value) => {
   if (window !== 'undefined') {
     localStorage.setItem(key, JSON.stringify(value));
   }
 };
-
-//Set Cookie in Localstorage
-export const removeCookieFromLocalStorage = (key) => {
+// remove from localstorage
+export const removeLocalStorage = (key) => {
   if (window !== 'undefined') {
     localStorage.removeItem(key);
   }
 };
-
-//Get Cookie in Localstorage
-// export const getCookieFromLocalStorage = (key, value) => {
-//   if (window !== 'undefined') {
-//     localStorage.getItem(key, JSON.parse(value));
-//   }
-// };
-
-export const authenticate = (res, next) => {
-  setCookie('token', res.data.token);
-  setCookieInLocalStorage('user', res.data.user);
+// authenticate user by passing data to cookie and localstorage during signin
+export const authenticate = (response, next) => {
+  console.log('AUTHENTICATE HELPER ON SIGNIN RESPONSE', response);
+  setCookie('token', response.data.token);
+  setLocalStorage('user', response.data.user);
   next();
 };
-
-//User Info
+// access user info from localstorage
 export const isAuth = () => {
   if (window !== 'undefined') {
-    const cookeChecked = getCookie('token');
-    if (cookeChecked) {
+    const cookieChecked = getCookie('token');
+    if (cookieChecked) {
       if (localStorage.getItem('user')) {
         return JSON.parse(localStorage.getItem('user'));
       } else {
@@ -90,4 +82,10 @@ export const isAuth = () => {
       }
     }
   }
+};
+
+export const signout = (next) => {
+  removeCookie('token');
+  removeLocalStorage('user');
+  next();
 };

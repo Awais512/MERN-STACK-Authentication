@@ -1,7 +1,7 @@
 import React from 'react';
-import { userSignin } from '../../Functions/auth';
+import { userSignin, authenticate, isAuth } from '../../Functions/auth';
 import { toast } from 'react-toastify';
-import { useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 
 const SigninForm = ({ values, setValues }) => {
   const history = useHistory();
@@ -19,7 +19,7 @@ const SigninForm = ({ values, setValues }) => {
       toast.error('Password must be atleast 6 characters');
     } else {
       try {
-        const { data } = await userSignin({ email, password });
+        const response = await userSignin({ email, password });
         setValues({
           ...values,
           name: '',
@@ -27,10 +27,12 @@ const SigninForm = ({ values, setValues }) => {
           password: '',
           btnText: 'Submit',
         });
-        console.log(data);
-        history.push('/');
+        console.log(response.data);
+        authenticate(response, () => {
+          toast.success(`Hey ${response.data.user.name} Welcome`);
+          history.push('/');
+        });
       } catch (error) {
-        console.log('SIGNUP ERROR', error.response.data);
         toast.error(error.response.data.error);
       }
     }

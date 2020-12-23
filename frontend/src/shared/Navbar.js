@@ -29,6 +29,12 @@ const Navbar = () => {
 
       {isAuth() && (
         <li className='nav-item'>
+          <span className='text-light nav-link'>{isAuth().name}</span>
+        </li>
+      )}
+
+      {isAuth() && (
+        <li className='nav-item'>
           <span
             className='text-light nav-link'
             style={{ cursor: 'pointer', color: '#fff' }}

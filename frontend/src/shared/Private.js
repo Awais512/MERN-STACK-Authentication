@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import axios from 'axios';
-import { isAuth, loadProfile } from '../Functions/auth';
-import { ToastContainer, toast } from 'react-toastify';
+import React, { useState } from 'react';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import UpdateProfileForm from '../components/Forms/UpdateProfileForm';
 

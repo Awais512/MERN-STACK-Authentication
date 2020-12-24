@@ -98,3 +98,12 @@ export const loadProfile = async (id) => {
   };
   return await axios.get(`${process.env.REACT_APP_API}/user/${id}`, config);
 };
+
+export const updateUser = async (response, next) => {
+  if (typeof window !== 'undefined') {
+    let auth = JSON.parse(localStorage.getItem('user'));
+    auth = response.data;
+    localStorage.setItem('user', JSON.stringify(auth));
+  }
+  next();
+};

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { getCookie, isAuth, loadProfile, signout } from '../../Functions/auth';
+import { getCookie, isAuth, signout, updateUser } from '../../Functions/auth';
 import { useHistory } from 'react-router-dom';
 
 const UpdateProfileForm = ({ values, setValues }) => {
@@ -14,6 +14,21 @@ const UpdateProfileForm = ({ values, setValues }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API}/user/${isAuth()._id}`,
+        { name, password },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      console.log(response.data);
+      updateUser(response, () => {
+        toast.success('Profile updated Successfully');
+      });
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
   };
 
   useEffect(() => {
@@ -40,7 +55,7 @@ const UpdateProfileForm = ({ values, setValues }) => {
     }
   };
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className='form-group'>
         <label className='text-muted'>Role</label>
         <input

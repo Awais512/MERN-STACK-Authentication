@@ -25,6 +25,11 @@ exports.getUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
+    if (req.body.password.length < 6) {
+      return res.status(400).json({
+        error: 'Password should be min 6 characters long',
+      });
+    }
     if (user) {
       user.name = req.body.name || user.name;
       if (req.body.password) {

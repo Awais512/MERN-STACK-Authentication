@@ -89,3 +89,12 @@ export const signout = (next) => {
   removeLocalStorage('user');
   next();
 };
+
+export const loadProfile = async (id) => {
+  const config = {
+    headers: {
+      Authorizaton: `Bearer ${getCookie('token')}`,
+    },
+  };
+  return await axios.get(`${process.env.REACT_APP_API}/user/${id}`, config);
+};

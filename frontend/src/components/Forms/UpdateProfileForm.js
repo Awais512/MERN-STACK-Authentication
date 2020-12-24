@@ -1,6 +1,13 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { getCookie, isAuth, loadProfile, signout } from '../../Functions/auth';
+import { useHistory } from 'react-router-dom';
 
 const UpdateProfileForm = ({ values, setValues }) => {
+  const history = useHistory();
+  const token = getCookie('token');
+
   const { name, email, password, btnText, role } = values;
   const handleChange = (name) => (e) => {
     setValues({ ...values, [name]: e.target.value });
@@ -8,11 +15,40 @@ const UpdateProfileForm = ({ values, setValues }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   };
+
+  useEffect(() => {
+    loadProfile();
+  }, []);
+
+  const loadProfile = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/user/${isAuth()._id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      const { name, email, role } = data;
+      setValues({ ...values, name: name, email: email, role: role });
+    } catch (error) {
+      toast.error(error.response.data.error);
+      if (error.response.status === 401) {
+        signout(() => {
+          history.push('/');
+        });
+      }
+    }
+  };
   return (
     <form>
       <div className='form-group'>
         <label className='text-muted'>Role</label>
-        <input value={role} type='text' className='form-control' />
+        <input
+          defaultValue={role}
+          type='text'
+          className='form-control'
+          disabled
+        />
       </div>
       <div className='form-group'>
         <label className='text-muted'>Name</label>
@@ -25,7 +61,12 @@ const UpdateProfileForm = ({ values, setValues }) => {
       </div>
       <div className='form-group'>
         <label className='text-muted'>Email</label>
-        <input value={email} type='email' className='form-control' />
+        <input
+          defaultValue={email}
+          type='email'
+          className='form-control'
+          disabled
+        />
       </div>
       <div className='form-group'>
         <label className='text-muted'>Password</label>

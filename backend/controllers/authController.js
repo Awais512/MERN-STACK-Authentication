@@ -99,3 +99,47 @@ exports.signin = async (req, res) => {
     res.status(500).json({ error: 'Something Went Wrong', error: err });
   }
 };
+
+//@desc     Forgot Password
+//@route    PUT /api/v1/auth/forgotpassword
+//@access   Public
+exports.forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = User.findOne({ email });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ error: 'User with this email does not exist' });
+    }
+
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_RESET_PASSWORD, {
+      expiresIn: '10m',
+    });
+    const emailData = {
+      from: process.env.EMAIL_FROM,
+      to: email,
+      subject: `Password Reset Link`,
+      html: `
+        <h1>Please use the following link to Reset your Password</h1>
+        <p>${process.env.CLIENT_URL}/auth/forgotpassword/${token}</p>
+        <hr />
+        <p>Email may contain sensitive information</p>
+        <p>${process.env.CLIENT_URL}</p>
+      `,
+    };
+    const sent = await sgMail.send(emailData);
+
+    res.json({
+      message: `Email has been sent to ${email}. Follow the instruction to activate your account`,
+    });
+  } catch (error) {
+    console.log(err.response.body);
+    res.json({ message: err.message });
+  }
+};
+
+//@desc     Reset Password
+//@route    PUT /api/v1/auth/resetpassword
+//@access   Public
+exports.resetPassword = async (req, res) => {};

@@ -32,10 +32,10 @@ exports.updateUser = async (req, res) => {
       }
 
       const updatedUser = await user.save();
+      updatedUser.hashed_password = undefined;
+      updatedUser.salt = undefined;
       return res.json({
-        _id: updatedUser._id,
-        name: updatedUser.name,
-        email: updatedUser.email,
+        updatedUser,
       });
     } else {
       return res.status(400).json({ error: 'User not found' });

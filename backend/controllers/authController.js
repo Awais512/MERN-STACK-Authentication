@@ -1,5 +1,6 @@
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
+const _ = require('lodash');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -128,10 +129,20 @@ exports.forgotPassword = async (req, res) => {
         <p>${process.env.CLIENT_URL}</p>
       `,
     };
-    const sent = await sgMail.send(emailData);
 
-    res.json({
-      message: `Email has been sent to ${email}. Follow the instruction to activate your account`,
+    return user.updateOne({ resetPasswordLink: token }, (err) => {
+      if (err) {
+        return res.status(400).json({ error: 'Connection Error' });
+      } else {
+        sgMail
+          .send(emailData)
+          .then((sent) => {
+            return res.json({
+              message: `Email has been sent to ${email}. Follow the instruction to activate your account`,
+            });
+          })
+          .catch((err) => console.log(err));
+      }
     });
   } catch (error) {
     console.log(err.response.body);
@@ -142,4 +153,46 @@ exports.forgotPassword = async (req, res) => {
 //@desc     Reset Password
 //@route    PUT /api/v1/auth/resetpassword
 //@access   Public
-exports.resetPassword = async (req, res) => {};
+exports.resetPassword = (req, res) => {
+  const { resetPasswordLink, newPassword } = req.body;
+
+  if (resetPasswordLink) {
+    jwt.verify(
+      resetPasswordLink,
+      process.env.JWT_RESET_PASSWORD,
+      function (err, decoded) {
+        if (err) {
+          return res.status(400).json({
+            error: 'Expired link. Try again',
+          });
+        }
+
+        User.findOne({ resetPasswordLink }, (err, user) => {
+          if (err || !user) {
+            return res.status(400).json({
+              error: 'Something went wrong. Try later',
+            });
+          }
+
+          const updatedFields = {
+            password: newPassword,
+            resetPasswordLink: '',
+          };
+
+          user = _.extend(user, updatedFields);
+
+          user.save((err, result) => {
+            if (err) {
+              return res.status(400).json({
+                error: 'Error resetting user password',
+              });
+            }
+            res.json({
+              message: `Great! Now you can login with your new password`,
+            });
+          });
+        });
+      }
+    );
+  }
+};

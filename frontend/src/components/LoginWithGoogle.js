@@ -1,17 +1,17 @@
 import React from 'react';
 import { GoogleLogin } from 'react-google-login';
-import { authenticate, isAuth } from '../Functions/auth';
 import axios from 'axios';
 
-const LoginWithGoogle = () => {
+const LoginWithGoogle = ({ informParent = (f) => f }) => {
   const responseGoogle = (response) => {
     console.log(response.tokenId);
     axios
-      .post(`${process.env.REACT_APP_API}/googlelogin`, {
+      .post(`${process.env.REACT_APP_API}/auth/googlelogin`, {
         idToken: response.tokenId,
       })
       .then((response) => {
         console.log(response);
+        informParent(response);
       })
       .catch((error) => {
         console.log(error.response);

@@ -10,6 +10,13 @@ const SigninForm = ({ values, setValues }) => {
   const handleChange = (name) => (e) => {
     setValues({ ...values, [name]: e.target.value });
   };
+  const informParent = (response) => {
+    authenticate(response, () => {
+      isAuth() && isAuth().role === 'admin'
+        ? history.push('/admin')
+        : history.push('/private');
+    });
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email) {
@@ -70,7 +77,7 @@ const SigninForm = ({ values, setValues }) => {
         </button>
       </div>
       <div className='pt-2'>
-        <LoginWithGoogle />
+        <LoginWithGoogle informParent={informParent} />
       </div>
     </form>
   );

@@ -2,6 +2,7 @@ import React from 'react';
 import { userSignin, authenticate, isAuth } from '../../Functions/auth';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
+import LoginWithGoogle from '../LoginWithGoogle';
 
 const SigninForm = ({ values, setValues }) => {
   const history = useHistory();
@@ -67,6 +68,9 @@ const SigninForm = ({ values, setValues }) => {
         >
           Submit
         </button>
+      </div>
+      <div className='pt-2'>
+        <LoginWithGoogle />
       </div>
     </form>
   );

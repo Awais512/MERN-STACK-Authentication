@@ -113,3 +113,10 @@ export const forgotPassword = async (email) => {
     email,
   });
 };
+
+export const resetPassword = async (newPassword, token) => {
+  return await axios.put(`${process.env.REACT_APP_API}/auth/resetpassword`, {
+    newPassword,
+    token,
+  });
+};

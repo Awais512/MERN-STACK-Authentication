@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import Activate from './pages/Activate';
 import Forgot from './pages/Forgot';
 import Home from './pages/Home';
+import Reset from './pages/Reset';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import Admin from './shared/Admin';
@@ -20,6 +21,7 @@ const App = () => {
         <Route path='/signup' component={Signup} />
         <Route path='/auth/activate/:token' component={Activate} />
         <Route path='/forgot' component={Forgot} />
+        <Route path='/auth/password/reset/:token' component={Reset} />
         <PrivateRoute path='/private' component={Private} />
         <AdminRoute path='/admin' component={Admin} />
       </Layout>

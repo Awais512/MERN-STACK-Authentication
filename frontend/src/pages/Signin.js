@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import SigninForm from '../components/Forms/SigninForm';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { isAuth } from '../Functions/auth';
 
 const Signin = () => {
@@ -16,6 +16,10 @@ const Signin = () => {
         {isAuth() ? <Redirect to='/' /> : null}
         <h1 className='p-5 text-center'>Sign In</h1>
         <SigninForm values={values} setValues={setValues} />
+        <br />
+        <Link to='/forgot' className='btn btn-sm btn-outline-danger'>
+          Forgot Password
+        </Link>
       </div>
     </>
   );

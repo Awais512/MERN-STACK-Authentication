@@ -23,6 +23,7 @@
     "lodash": "^4.17.20",
     "mongoose": "^5.11.8",
     "morgan": "^1.10.0",
+    "node-fetch": "^2.6.1",
     "react-google-login": "^5.2.1"
   },
   "devDependencies": {

@@ -7,6 +7,7 @@ const {
   forgotPassword,
   resetPassword,
   googleLogin,
+  facebookLogin,
 } = require('../controllers/authController');
 const { runValidation } = require('../validators');
 const {
@@ -20,6 +21,7 @@ router.post('/signup', signupValidator, runValidation, signup);
 router.post('/account-activation', accountActivation);
 router.post('/signin', signinValidator, signin);
 router.post('/googlelogin', googleLogin);
+router.post('/facebooklogin', facebookLogin);
 router.put(
   '/forgotpassword',
   forgotPasswordValidator,

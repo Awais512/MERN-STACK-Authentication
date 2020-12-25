@@ -5,24 +5,25 @@ import axios from 'axios';
 const LoginWithFacebook = ({ informParent = (f) => f }) => {
   const responseFacebook = (response) => {
     console.log(response);
-    axios
-      .post(`${process.env.REACT_APP_API}/auth/facebooklogin`, {
-        userID: response.userID,
-        accessToken: response.accessToken,
-      })
+    axios({
+      method: 'POST',
+      url: `${process.env.REACT_APP_API}/facebook-login`,
+      data: { userID: response.userID, accessToken: response.accessToken },
+    })
       .then((response) => {
-        console.log(response);
+        console.log('FACEBOOK SIGNIN SUCCESS', response);
+        // inform parent component
         informParent(response);
       })
       .catch((error) => {
-        console.log(error.response);
+        console.log('FACEBOOK SIGNIN ERROR', error.response);
       });
   };
   return (
     <div>
       <FacebookLogin
         appId={process.env.REACT_APP_FACEBOOK_APP_ID}
-        autoLoad={false}
+        autoLoad={true}
         render={(renderProps) => (
           <button
             className='btn btn-primary btn-lg btn-block'

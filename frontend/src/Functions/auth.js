@@ -107,3 +107,9 @@ export const updateUser = async (response, next) => {
   }
   next();
 };
+
+export const forgotPassword = async (email) => {
+  return await axios.put(`${process.env.REACT_APP_API}/auth/forgotpassword`, {
+    email,
+  });
+};

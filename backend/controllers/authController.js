@@ -104,50 +104,57 @@ exports.signin = async (req, res) => {
 //@desc     Forgot Password
 //@route    PUT /api/v1/auth/forgotpassword
 //@access   Public
-exports.forgotPassword = async (req, res) => {
+exports.forgotPassword = (req, res) => {
   const { email } = req.body;
-  try {
-    const user = User.findOne({ email });
-    if (!user) {
-      return res
-        .status(400)
-        .json({ error: 'User with this email does not exist' });
+
+  User.findOne({ email }, (err, user) => {
+    if (err || !user) {
+      return res.status(400).json({
+        error: 'User with that email does not exist',
+      });
     }
 
     const token = jwt.sign({ _id: user._id }, process.env.JWT_RESET_PASSWORD, {
       expiresIn: '10m',
     });
+
     const emailData = {
       from: process.env.EMAIL_FROM,
       to: email,
-      subject: `Password Reset Link`,
+      subject: `Password Reset link`,
       html: `
-        <h1>Please use the following link to Reset your Password</h1>
-        <p>${process.env.CLIENT_URL}/auth/forgotpassword/${token}</p>
-        <hr />
-        <p>Email may contain sensitive information</p>
-        <p>${process.env.CLIENT_URL}</p>
-      `,
+              <h1>Please use the following link to reset your password</h1>
+              <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
+              <hr />
+              <p>This email may contain sensetive information</p>
+              <p>${process.env.CLIENT_URL}</p>
+          `,
     };
 
-    return user.updateOne({ resetPasswordLink: token }, (err) => {
+    return user.updateOne({ resetPasswordLink: token }, (err, success) => {
       if (err) {
-        return res.status(400).json({ error: 'Connection Error' });
+        console.log('RESET PASSWORD LINK ERROR', err);
+        return res.status(400).json({
+          error: 'Database connection error on user password forgot request',
+        });
       } else {
         sgMail
           .send(emailData)
           .then((sent) => {
+            // console.log('SIGNUP EMAIL SENT', sent)
             return res.json({
               message: `Email has been sent to ${email}. Follow the instruction to activate your account`,
             });
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            // console.log('SIGNUP EMAIL SENT ERROR', err)
+            return res.json({
+              message: err.message,
+            });
+          });
       }
     });
-  } catch (error) {
-    console.log(err.response.body);
-    res.json({ message: err.message });
-  }
+  });
 };
 
 //@desc     Reset Password

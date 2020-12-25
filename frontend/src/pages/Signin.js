@@ -17,7 +17,10 @@ const Signin = () => {
         <h1 className='p-5 text-center'>Sign In</h1>
         <SigninForm values={values} setValues={setValues} />
         <br />
-        <Link to='/forgot' className='btn btn-sm btn-outline-danger'>
+        <Link
+          to='/forgot'
+          className='btn btn-lg btn-outline-secondary btn-block bg-dark text-white'
+        >
           Forgot Password
         </Link>
       </div>

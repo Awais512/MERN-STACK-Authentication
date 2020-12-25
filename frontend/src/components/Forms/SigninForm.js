@@ -3,6 +3,7 @@ import { userSignin, authenticate, isAuth } from '../../Functions/auth';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 import LoginWithGoogle from '../LoginWithGoogle';
+import LoginWithFacebook from '../LoginWithFacebook';
 
 const SigninForm = ({ values, setValues }) => {
   const history = useHistory();
@@ -70,14 +71,15 @@ const SigninForm = ({ values, setValues }) => {
       <div className='pt-2'>
         <button
           disabled={!email || !password || password.length < 6}
-          className='btn btn-primary'
+          className='btn btn-warning btn-lg btn-block'
           onClick={handleSubmit}
         >
-          Submit
+          Login with Email and Password
         </button>
       </div>
       <div className='pt-2'>
         <LoginWithGoogle informParent={informParent} />
+        <LoginWithFacebook />
       </div>
     </form>
   );
